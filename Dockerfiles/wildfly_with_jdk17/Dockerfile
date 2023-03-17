@@ -1,7 +1,7 @@
 FROM amazoncorretto:17
 
 ENV WILDFLY_VERSION 26.1.3.Final
-ENV WILDFLY_SHA1 24a53b7f8ea384001912c4be78339cce1e0e1955
+ENV WILDFLY_SHA1 b9f52ba41df890e09bb141d72947d2510caf758c 
 ENV INSTALLAtion_DIR /opt/jboss
 ENV JBOSS_HOME $INSTALLAtion_DIR/wildfly
 ENV JBOSS_LAUNCH_IN_BACKGROUND true
@@ -11,6 +11,7 @@ ADD https://github.com/wildfly/wildfly/releases/download/$WILDFLY_VERSION/wildfl
 
 RUN yum update -y \
       && yum install -y tar xz gzip shadow-utils \
+      && sha1sum /tmp/wildfly-$WILDFLY_VERSION.tar.gz | grep $WILDFLY_SHA1 \
       && mkdir -p $INSTALLAtion_DIR \
       && tar -xf /tmp/wildfly-$WILDFLY_VERSION.tar.gz \
       && mv ./wildfly-$WILDFLY_VERSION $INSTALLAtion_DIR \
