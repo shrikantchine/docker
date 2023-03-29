@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  master:
+    container_name: redis-master
+    image: redis:6.2.6
+    ports:
+      - 6379:6379
+    volumes:
+      - ./master.conf:/usr/local/etc/redis/redis.conf
+      - ./master-data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - redis-net
+
+  slave-1:
+    container_name: slave-1
+    image: redis:6.2.6
+    ports:
+      - 6380:6380
+    volumes:
+      - ./slave1.conf:/usr/local/etc/redis/redis.conf
+      - ./slave1-data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - redis-net
+
+  slave-2:
+    container_name: slave-2
+    image: redis:6.2.6
+    ports:
+      - 6381:6381
+    volumes:
+      - ./slave2.conf:/usr/local/etc/redis/redis.conf
+      - ./slave2-data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - redis-net
+
+  sentinel-1:
+    container_name: sentinel-1
+    image: redis:6.2.6
+    ports:
+      - 6382:26379
+    volumes:
+      - ./sentinel1.conf:/usr/local/etc/redis/sentinel.conf
+    command: redis-server /usr/local/etc/redis/sentinel.conf --sentinel
+    networks:
+      - redis-net
+
+
+networks:
+  redis-net:
+    name: redis-net
