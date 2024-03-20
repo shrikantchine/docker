@@ -1,15 +1,13 @@
 version: '3.1'
 
 services:
-
   db:
-    image: mysql 
+    image: mysql:8.3.0
+    container_name: mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
-
-  adminer:
-    image: adminer
-    restart: always
+    volumes:
+      - ${MYSQL_DATA_DIR}:/var/lib/mysql
     ports:
-      - 8080:8080
+      - 3306:3306
